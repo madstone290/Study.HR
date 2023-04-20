@@ -1,5 +1,9 @@
 import { config } from "../config";
 
+const apiUrlSlash = config.apiUrl.endsWith("/")
+    ? config.apiUrl
+    : config.apiUrl + "/";
+
 export class ApiResult {
     isSuccessful = false;
     message = "";
@@ -22,9 +26,8 @@ export class ApiResult {
 
 export class Api {
     async send(method, route, jsonMapper = null, bodyObj = null) {
-        const apiResult = new ApiResult();
         try {
-            const response = await fetch(config.apiUrl + route,
+            const response = await fetch(apiUrlSlash + route,
                 {
                     method: method,
                     headers: {

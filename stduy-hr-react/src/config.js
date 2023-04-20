@@ -1,3 +1,4 @@
 export const config = {
-    apiUrl: "https://localhost:7777/"
+    apiUrl: process.env.REACT_APP_API_URL
 }
+
