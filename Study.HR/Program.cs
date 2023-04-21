@@ -12,6 +12,7 @@ namespace Study.HR
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Configuration.AddJsonFile("Secrets/database.json");

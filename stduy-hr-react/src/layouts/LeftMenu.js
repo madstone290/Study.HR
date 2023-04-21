@@ -20,7 +20,8 @@ const items = [
     ]),
     new ItemInfo("100", <Link to="/">Home</Link>, <UserOutlined />),
     new ItemInfo("200", "기초코드", <UserOutlined />, [
-        new ItemInfo("201", <Link to="/employeelist">사원</Link>, <UserOutlined />)
+        new ItemInfo("201", <Link to="/departments">부서</Link>, <UserOutlined />),
+        new ItemInfo("202", <Link to="/employeelist">사원</Link>, <UserOutlined />)
     ]),
     new ItemInfo("300", "근태", <UserOutlined />, [
         new ItemInfo("301", <Link to="/">출퇴근</Link>, <UserOutlined />),

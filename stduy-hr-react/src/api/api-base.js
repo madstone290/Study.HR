@@ -25,7 +25,7 @@ export class ApiResult {
 }
 
 export class Api {
-    async send(method, route, jsonMapper = null, bodyObj = null) {
+    async send(method, route, bodyObj, { jsonMapper, textMapper }) {
         try {
             const response = await fetch(apiUrlSlash + route,
                 {
@@ -38,8 +38,16 @@ export class Api {
             if (!response.ok)
                 return ApiResult.fail("Status " + response.statusText);
 
-            const content = await response.json();
-            const data = jsonMapper ? jsonMapper(content) : null;
+            let data = null;
+            if (jsonMapper) {
+                const json = await response.json();
+                data = jsonMapper(json);
+            }
+            else if (textMapper) {
+                const text = await response.text();
+                data = textMapper(text);
+            }
+
             return ApiResult.success(data);
         } catch (error) {
             console.log(error);
@@ -47,20 +55,20 @@ export class Api {
         }
     }
 
-    async get(route, jsonMapper = null) {
-        return await this.send("GET", route, jsonMapper);
+    async get(route, { jsonMapper, textMapper }) {
+        return await this.send("GET", route, null, { jsonMapper, textMapper });
     }
 
-    async post(route, jsonMapper = null, bodyObj = null) {
-        return await this.send("POST", route, jsonMapper, bodyObj);
+    async post(route, bodyObj, { jsonMapper, textMapper }) {
+        return await this.send("POST", route, bodyObj, { jsonMapper, textMapper });
     }
 
-    async put(route, jsonMapper = null, bodyObj = null) {
-        return await this.send("PUT", route, jsonMapper, bodyObj);
+    async put(route, bodyObj, { jsonMapper, textMapper }) {
+        return await this.send("PUT", route, bodyObj, { jsonMapper, textMapper });
     }
 
-    async delete(route, jsonMapper = null) {
-        return await this.send("DELETE", route, jsonMapper);
+    async delete(route, { jsonMapper, textMapper }) {
+        return await this.send("DELETE", route, null, { jsonMapper, textMapper });
     }
 }
 

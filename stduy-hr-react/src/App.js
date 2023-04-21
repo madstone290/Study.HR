@@ -4,6 +4,7 @@ import { BaseLayout } from "./BaseLayout";
 import { Home } from "./pages/Home";
 import { EmployeeListView } from "./pages/Employee/EmployeeListView";
 import { NotFound } from './pages/NotFound';
+import { DepartmentList } from './pages/Department/DepartmentList';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                     <Route path="/" element={<BaseLayout />}>
                         <Route index element={<Home />} />
                         <Route path="employeelist" element={<EmployeeListView />} />
+                        <Route path="departments" element={<DepartmentList />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>

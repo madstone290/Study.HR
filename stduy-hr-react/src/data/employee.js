@@ -1,4 +1,3 @@
-import { toKorString } from "../utils/date-util"
 import { Dayjs } from "dayjs"
 
 export class Employee {
