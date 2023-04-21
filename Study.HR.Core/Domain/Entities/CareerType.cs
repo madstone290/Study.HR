@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Study.HR.Core.Domain.Services;
 
 namespace Study.HR.Core.Domain.Entities
 {
@@ -12,10 +8,13 @@ namespace Study.HR.Core.Domain.Entities
     public class CareerType : Entity
     {
         protected CareerType() { }
-        public CareerType(string code, string name)
+
+        public static async Task<CareerType> CreateAsync(string code, string name, ICareerTypeService service)
         {
-            ChangeCode(code);
-            ChangeName(name);
+            CareerType careerType = new CareerType();
+            await careerType.ChangeCodeAsync(code, service);
+            await careerType.ChangeNameAsync(name, service);
+            return careerType;
         }
 
 
@@ -33,9 +32,12 @@ namespace Study.HR.Core.Domain.Entities
         /// 코드 변경
         /// </summary>
         /// <param name="code"></param>
-        public void ChangeCode(string code)
+        public async Task ChangeCodeAsync(string code, ICareerTypeService service)
         {
             ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+            if (Code == code)
+                return;
+            ThrowIf(await service.CodeExistsAsync(code), "Code exist!");
             Code = code;
         }
 
@@ -43,9 +45,12 @@ namespace Study.HR.Core.Domain.Entities
         /// 이름 변경
         /// </summary>
         /// <param name="name"></param>
-        public void ChangeName(string name)
+        public async Task ChangeNameAsync(string name, ICareerTypeService service)
         {
             ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            if (Name == name)
+                return;
+            ThrowIf(await service.NameExists(name), "Name exist!");
             Name = name;
         }
     }

@@ -12,6 +12,16 @@ namespace Study.HR.Core.Infrastructure.Data.Repos
         {
         }
 
+        public Task<bool> ExistCodeAsync(string code)
+        {
+            return Set.AnyAsync(x=> x.Code == code);
+        }
+
+        public Task<bool> ExistNameAsync(string name)
+        {
+            return Set.AnyAsync(x => x.Name == name);
+        }
+
         public async Task<List<CareerTypeDto>> GetListAsync()
         {
             return await Set.Select(x => new CareerTypeDto
