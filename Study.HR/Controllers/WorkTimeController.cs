@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Study.HR.Controllers.Dtos;
 using Study.HR.Core.Domain.Entities;
 using Study.HR.Core.Application.Repos;
 using Study.HR.Core.Infrastructure.Data;

@@ -1,9 +1,4 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Study.HR.Core.Application.Base
 {
@@ -17,5 +12,17 @@ namespace Study.HR.Core.Application.Base
         where TCommand : ICommand<TResult>
     {
 
+    }
+
+    public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
+          where TCommand : ICommand
+    {
+        public abstract Task Handle(TCommand command, CancellationToken cancellationToken);
+    }
+
+    public abstract class CommandHandler<TCommand, TResult> : ICommandHandler<TCommand, TResult>
+                where TCommand : ICommand<TResult>
+    {
+        public abstract Task<TResult> Handle(TCommand command, CancellationToken cancellationToken);
     }
 }

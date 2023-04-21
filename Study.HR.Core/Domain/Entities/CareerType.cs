@@ -37,7 +37,7 @@ namespace Study.HR.Core.Domain.Entities
             ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
             if (Code == code)
                 return;
-            ThrowIf(await service.CodeExistsAsync(code), "Code exist!");
+            ThrowIf(await service.CodeExistAsync(code), "Code exist!");
             Code = code;
         }
 
@@ -50,7 +50,7 @@ namespace Study.HR.Core.Domain.Entities
             ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
             if (Name == name)
                 return;
-            ThrowIf(await service.NameExists(name), "Name exist!");
+            ThrowIf(await service.NameExistAsync(name), "Name exist!");
             Name = name;
         }
     }

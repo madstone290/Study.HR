@@ -2,18 +2,18 @@
 
 namespace Study.HR.Core.Domain.Services
 {
-    public interface ICareerTypeService : IDomainService
+    public interface IDepartmentService : IDomainService
     {
         Task<bool> CodeExistAsync(string code);
 
         Task<bool> NameExistAsync(string name);
     }
 
-    public class CareerTypeService : ICareerTypeService
+    public class DepartmentService : IDepartmentService
     {
-        private readonly ICareerTypeRepository _repository;
+        private readonly IDepartmentRepository _repository;
 
-        public CareerTypeService(ICareerTypeRepository repository)
+        public DepartmentService(IDepartmentRepository repository)
         {
             _repository = repository;
         }

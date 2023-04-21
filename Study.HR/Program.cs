@@ -27,9 +27,11 @@ namespace Study.HR
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly));
 
 
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentReadRepository, DepartmentRepository>();
 
             builder.Services.AddScoped<ICareerTypeService, CareerTypeService>();
-
             builder.Services.AddScoped<ICareerTypeRepository, CareerTypeRepository>();
             builder.Services.AddScoped<ICareerTypeReadRepository, CareerTypeRepository>();
 

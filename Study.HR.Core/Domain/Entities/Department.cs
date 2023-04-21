@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Study.HR.Core.Domain.Services;
 
 namespace Study.HR.Core.Domain.Entities
 {
@@ -12,13 +8,13 @@ namespace Study.HR.Core.Domain.Entities
     public class Department : Entity
     {
         protected Department() { }
-        public Department(string code, string name)
-        {
-            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
-            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
 
-            Name = name;
-            Code = code;
+        public static async Task<Department> CreateAsync(string code, string name, IDepartmentService service)
+        {
+            Department department = new Department();
+            await department.ChangeCodeAsync(code, service);
+            await department.ChangeNameAsync(name, service);
+            return department;
         }
 
         /// <summary>
@@ -40,6 +36,39 @@ namespace Study.HR.Core.Domain.Entities
         /// 상위 부서
         /// </summary>
         public Department? UpperDepartment { get; private set; }
+
+        /// <summary>
+        /// 코드 변경
+        /// </summary>
+        /// <param name="code"></param>
+        public async Task ChangeCodeAsync(string code, IDepartmentService service)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+            if (Code == code)
+                return;
+            ThrowIf(await service.CodeExistAsync(code), "Code exist!");
+            Code = code;
+        }
+
+        /// <summary>
+        /// 이름 변경
+        /// </summary>
+        /// <param name="name"></param>
+        public async Task ChangeNameAsync(string name, IDepartmentService service)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            if (Name == name)
+                return;
+            ThrowIf(await service.NameExistAsync(name), "Name exist!");
+            Name = name;
+        }
+
+        public void ChangeUpperDepartment(Department? department)
+        {
+            ThrowIf(department != null && department.Id == Id, "Upper department id is the same as me!");
+                
+            UpperDepartment = department;
+        }
 
     }
 }
