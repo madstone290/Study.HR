@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Study.HR.Core.Infrastructure.Data.Repos
 {
-    public class EmployeeSalaryReadRepository : Repository<PayProfile>, IEmployeeSalaryReadRepository
+    public class PayProfileRepository : Repository<PayProfile>, IEmployeeSalaryReadRepository
     {
-        public EmployeeSalaryReadRepository(ApplicationDbContext context) : base(context)
+        public PayProfileRepository(ApplicationDbContext context) : base(context)
         {
         }
 

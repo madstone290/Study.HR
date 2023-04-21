@@ -21,7 +21,7 @@ namespace Study.HR
                 cfg.UseNpgsql(dbConn);
             });
 
-            builder.Services.AddScoped<IEmployeeSalaryReadRepository, EmployeeSalaryReadRepository>();
+            builder.Services.AddScoped<IEmployeeSalaryReadRepository, PayProfileRepository>();
             builder.Services.AddScoped(typeof(Repository<>));
             builder.Services.AddScoped(typeof(Repository<,>));
 

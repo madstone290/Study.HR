@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Study.HR.Core.Domain;
-using Study.HR.Core.Domain.Repos;
 using System.Linq.Expressions;
 
 namespace Study.HR.Core.Infrastructure.Data
