@@ -14,9 +14,9 @@ namespace Study.HR.Controllers
     [Route("[controller]")]
     public class SalaryRecordController : ControllerBase
     {
-        private readonly Repository<SalaryRecord> _repository;
+        private readonly Repository<Payroll> _repository;
 
-        public SalaryRecordController(Repository<SalaryRecord> repository)
+        public SalaryRecordController(Repository<Payroll> repository)
         {
             _repository = repository;
         }
@@ -102,17 +102,11 @@ namespace Study.HR.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] SalaryRecord dto)
+        public async Task<IActionResult> CreateAsync([FromBody] Payroll dto)
         {
-            SalaryRecord workTime = new SalaryRecord()
+            Payroll workTime = new Payroll()
             {
-                EmployeeId = dto.EmployeeId,
-                MinutesWorked = dto.MinutesWorked,
-                BaseSalary = dto.BaseSalary,
-                BonusRate = dto.BonusRate,
-                EmployeeSalaryId = dto.EmployeeSalaryId,
-                WorkTimeId = dto.WorkTimeId,
-                Month = dto.Month,
+              
             };
 
             await _repository.AddAsync(workTime);

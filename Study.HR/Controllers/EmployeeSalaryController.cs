@@ -11,11 +11,11 @@ namespace Study.HR.Controllers
     public class EmployeeSalaryController : ControllerBase
     {
         private readonly ILogger<EmployeeController> _logger;
-        private readonly Repository<EmployeeSalary> _repository;
+        private readonly Repository<PayProfile> _repository;
         private readonly IEmployeeSalaryReadRepository _employeeSalaryReadRepository;
 
         public EmployeeSalaryController(ILogger<EmployeeController> logger, 
-            Repository<EmployeeSalary> repository,
+            Repository<PayProfile> repository,
             IEmployeeSalaryReadRepository employeeSalaryReadRepository)
         {
             _logger = logger;
@@ -47,13 +47,9 @@ namespace Study.HR.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] EmployeeSalaryDto dto)
         {
-            EmployeeSalary salary = new EmployeeSalary()
+            PayProfile salary = new PayProfile()
             {
-                EmployeeId = dto.EmployeeId,
-                BaseSalary = dto.BaseSalary,
-                BonusRate = dto.BonusRate,
-                ValidAfter = dto.ValidAfter,
-                ValidBefore = dto.ValidBefore
+                
             };
 
             await _repository.AddAsync(salary);

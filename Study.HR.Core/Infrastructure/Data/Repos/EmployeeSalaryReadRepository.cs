@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Study.HR.Core.Infrastructure.Data.Repos
 {
-    public class EmployeeSalaryReadRepository : Repository<EmployeeSalary>, IEmployeeSalaryReadRepository
+    public class EmployeeSalaryReadRepository : Repository<PayProfile>, IEmployeeSalaryReadRepository
     {
         public EmployeeSalaryReadRepository(ApplicationDbContext context) : base(context)
         {
@@ -26,10 +26,7 @@ namespace Study.HR.Core.Infrastructure.Data.Repos
                     EmployeeId = x.EmployeeId,
                     BaseSalary = x.BaseSalary,
                     BonusRate = x.BonusRate,
-                    EmployeeEnteredDate = x.Employee.EnteredDate,
                     EmployeeName = x.Employee.Name,
-                    ValidAfter = x.ValidAfter,
-                    ValidBefore = x.ValidBefore,
                 })
                 .FirstOrDefaultAsync();
         }
@@ -44,10 +41,7 @@ namespace Study.HR.Core.Infrastructure.Data.Repos
                    EmployeeId = x.EmployeeId,
                    BaseSalary = x.BaseSalary,
                    BonusRate = x.BonusRate,
-                   EmployeeEnteredDate = x.Employee.EnteredDate,
                    EmployeeName = x.Employee.Name,
-                   ValidAfter = x.ValidAfter,
-                   ValidBefore = x.ValidBefore,
                })
                .ToListAsync();
         }
@@ -63,10 +57,7 @@ namespace Study.HR.Core.Infrastructure.Data.Repos
                    EmployeeId = x.EmployeeId,
                    BaseSalary = x.BaseSalary,
                    BonusRate = x.BonusRate,
-                   EmployeeEnteredDate = x.Employee.EnteredDate,
                    EmployeeName = x.Employee.Name,
-                   ValidAfter = x.ValidAfter,
-                   ValidBefore = x.ValidBefore,
                })
                .ToListAsync();
         }

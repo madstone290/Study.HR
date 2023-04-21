@@ -10,10 +10,21 @@ namespace Study.HR.Core.Infrastructure.Data.Config
         {
             builder.ToTable("Employee");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Name).IsRequired();
-            builder.Property(x => x.EnteredDate).IsRequired();
-            builder.HasOne(x => x.Detail).WithOne(x=> x.Employee)
-                .HasForeignKey<EmployeeDetail>(x=> x.EmployeeId);
+
+            builder.HasOne(x => x.PayProfile).WithOne(x => x.Employee)
+                .HasForeignKey<PayProfile>(x => x.EmployeeId);
+
+            builder.HasOne(x => x.JobPosition).WithMany()
+                .HasForeignKey(x => x.JobPositionId);
+
+            builder.HasOne(x => x.JobRole).WithMany()
+                .HasForeignKey(x => x.JobRoleId);
+
+            builder.HasOne(x => x.CareerType).WithMany()
+                .HasForeignKey(x => x.CareerTypeId);
+
+            builder.HasOne(x => x.EmploymentType).WithMany()
+                .HasForeignKey(x => x.EmploymentTypeId);
         }
     }
 }

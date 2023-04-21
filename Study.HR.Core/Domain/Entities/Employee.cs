@@ -12,33 +12,133 @@ namespace Study.HR.Core.Domain.Entities
         public Employee(string name, DateTime enteredDate)
         {
             Name = name;
-            EnteredDate = enteredDate;
         }
 
-        public string Name { get; set; }
+        /// <summary>
+        /// 이름
+        /// </summary>
+        public string Name { get; private set; } = string.Empty;
 
-        public DateTime DateOfBirth { get; set; }
-        public DateTime EnteredDate { get; set; }
+        /// <summary>
+        /// 사원코드
+        /// </summary>
+        public string Code { get; private set; } = string.Empty;
 
-        public string? SalaryType { get; set; }
-        public string? Address { get; set; }
+        /// <summary>
+        /// 영문이름
+        /// </summary>
+        public string? EnglishName { get; private set; }
 
-        public string? Email { get; set; }
+        /// <summary>
+        /// 주민등록번호
+        /// </summary>
+        public string? ResidentNumber { get; private set; }
 
-        public string? LoginId { get; set; }
+        /// <summary>
+        /// 세대주 여부
+        /// </summary>
+        public bool IsHouseOwner { get; private set; }
 
-        public string? LoginPassword { get; set; }
+        /// <summary>
+        /// 입사일
+        /// </summary>
+        public DateTime? HireDate { get; private set; }
 
-        public string? PhoneNumber { get; set; }
-        public decimal BaseSalary { get; set; }
-        public string? SalaryCurrency { get; set; }
+        /// <summary>
+        /// 퇴사일
+        /// </summary>
+        public DateTime? RetireDate { get; private set; }
 
-        public EmployeeDetail Detail { get; set; }
+        /// <summary>
+        /// 퇴사사유
+        /// </summary>
+        public string? RetireReason { get; private set; }
 
-        
-        
+        /// <summary>
+        /// 이메일
+        /// </summary>
+        public string? Email { get; private set; }
+
+        /// <summary>
+        /// 집전화번호
+        /// </summary>
+        public string? PhoneNumber { get; private set; }
+
+        /// <summary>
+        /// 휴대폰번호
+        /// </summary>
+        public string? MobileNumber { get; private set; }
+
+        /// <summary>
+        /// 집주소
+        /// </summary>
+        public string? Address { get; private set; }
+
+        /// <summary>
+        /// 우편번호
+        /// </summary>
+        public string? ZipCode { get; private set; }
+
+        /// <summary>
+        /// 비밀번호
+        /// </summary>
+        public string? Password { get; private set; }
+
+        /// <summary>
+        /// 메모
+        /// </summary>
+        public string? Memo { get; private set; }
+
+        /// <summary>
+        /// 이미지 경로
+        /// </summary>
+        public string? ImagePath { get; private set; }
+
+        /// <summary>
+        /// 급여정보
+        /// </summary>
+        public PayProfile? PayProfile { get; private set; }
+
+        /// <summary>
+        /// 직위
+        /// </summary>
+        public int? JobPositionId { get; private set; }
+
+        /// <summary>
+        /// 직위
+        /// </summary>
+        public JobPosition? JobPosition { get; private set; }
+
+        /// <summary>
+        /// 직위
+        /// </summary>
+        public int? JobRoleId { get; private set; }
+
+        /// <summary>
+        /// 직책
+        /// </summary>
+        public JobRole? JobRole { get; private set; }
+
+        /// <summary>
+        /// 경력타입
+        /// </summary>
+        public int? CareerTypeId { get; private set; }
+
+        /// <summary>
+        /// 경력타입
+        /// </summary>
+        public CareerType? CareerType { get; private set; }
 
 
+        /// <summary>
+        /// 고용타입
+        /// </summary>
+        public int? EmploymentTypeId { get; private set; }
+
+        /// <summary>
+        /// 고용타입
+        /// </summary>
+        public EmploymentType? EmploymentType { get; private set; }
 
 
     }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Study.HR.Core.Infrastructure.Data;
@@ -11,9 +12,11 @@ using Study.HR.Core.Infrastructure.Data;
 namespace Study.HR.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230421023805_ResetDB")]
+    partial class ResetDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,6 +209,9 @@ namespace Study.HR.Core.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("EmployeeId1")
+                        .HasColumnType("integer");
+
                     b.Property<string>("SalaryCurrency")
                         .HasColumnType("text");
 
@@ -215,6 +221,9 @@ namespace Study.HR.Core.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.HasIndex("EmployeeId1")
                         .IsUnique();
 
                     b.ToTable("PayProfile", (string)null);
@@ -316,10 +325,14 @@ namespace Study.HR.Core.Migrations
             modelBuilder.Entity("Study.HR.Core.Domain.Entities.PayProfile", b =>
                 {
                     b.HasOne("Study.HR.Core.Domain.Entities.Employee", "Employee")
-                        .WithOne("PayProfile")
+                        .WithOne()
                         .HasForeignKey("Study.HR.Core.Domain.Entities.PayProfile", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Study.HR.Core.Domain.Entities.Employee", null)
+                        .WithOne("PayProfile")
+                        .HasForeignKey("Study.HR.Core.Domain.Entities.PayProfile", "EmployeeId1");
 
                     b.Navigation("Employee");
                 });

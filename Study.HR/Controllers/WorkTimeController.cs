@@ -43,9 +43,9 @@ namespace Study.HR.Controllers
         {
             WorkTime workTime = new WorkTime()
             {
-                EmployeeId = dto.EmployeeId,
-                MinutesWorked = dto.MinutesWorked,
-                Month = dto.Month,
+                //EmployeeId = dto.EmployeeId,
+                //MinutesWorked = dto.MinutesWorked,
+                //Month = dto.Month,
             };
 
             await _repository.AddAsync(workTime);

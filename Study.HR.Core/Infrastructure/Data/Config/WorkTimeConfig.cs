@@ -10,14 +10,11 @@ namespace Study.HR.Core.Infrastructure.Data.Config
         {
             builder.ToTable("WorkTime");
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.Employee)
-                .WithMany()
+
+            builder.HasOne(x => x.Employee).WithMany()
                 .HasForeignKey(x => x.EmployeeId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Property(x => x.Month).IsRequired();
-            builder.Property(x => x.MinutesWorked).IsRequired();
         }
     }
 }

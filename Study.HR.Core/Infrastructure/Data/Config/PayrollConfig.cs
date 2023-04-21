@@ -4,25 +4,24 @@ using Study.HR.Core.Domain.Entities;
 
 namespace Study.HR.Core.Infrastructure.Data.Config
 {
-    public class SalaryRecordConfig : IEntityTypeConfiguration<SalaryRecord>
+    public class PayrollConfig : IEntityTypeConfiguration<Payroll>
     {
-        public void Configure(EntityTypeBuilder<SalaryRecord> builder)
+        public void Configure(EntityTypeBuilder<Payroll> builder)
         {
-            builder.ToTable("SalaryRecord");
+            builder.ToTable("Payroll");
             builder.HasKey(x => x.Id);
+
             builder.HasOne(x => x.Employee).WithMany()
                 .HasForeignKey(x=> x.EmployeeId).IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.Property(x => x.Month).IsRequired();
+
             builder.HasOne(x => x.WorkTime).WithMany()
                 .HasForeignKey(x => x.WorkTimeId).IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.Property(x => x.MinutesWorked).IsRequired();
-            builder.HasOne(x => x.EmployeeSalary).WithMany()
-                .HasForeignKey(x => x.EmployeeSalaryId).IsRequired()
+
+            builder.HasOne(x => x.PayProfile).WithMany()
+                .HasForeignKey(x => x.PayProfileId).IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.Property(x => x.BaseSalary).IsRequired();
-            builder.Property(x => x.BonusRate).IsRequired();
         }
     }
 }
