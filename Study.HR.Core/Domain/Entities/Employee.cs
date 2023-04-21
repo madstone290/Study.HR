@@ -8,10 +8,14 @@ namespace Study.HR.Core.Domain.Entities
 {
     public class Employee : Entity
     {
-        public Employee() { }
-        public Employee(string name, DateTime enteredDate)
+        protected Employee() { }
+        public Employee(string name, string code)
         {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+
             Name = name;
+            Code = code;
         }
 
         /// <summary>

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Study.HR.Core.Application.Dto
 {
-    public record EmployeeDto(
-        )
+    public record EmployeeDto()
     {
     }
 }
