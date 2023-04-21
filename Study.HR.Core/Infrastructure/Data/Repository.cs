@@ -36,11 +36,9 @@ namespace Study.HR.Core.Infrastructure.Data
         public DbSet<TEntity> Entities => _context.Set<TEntity>();
         public ApplicationDbContext Context => _context;
 
-        public async ValueTask AddAsync(TEntity entity, bool commit = true)
+        public async ValueTask AddAsync(TEntity entity)
         {
             await _context.AddAsync(entity);
-            if(commit)
-                await _context.SaveChangesAsync();
         }
 
         public void Update(TEntity entity)

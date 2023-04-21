@@ -13,7 +13,7 @@ namespace Study.HR.Core.Domain.Repos
     {
         Task<TEntity?> GetAsync(TId id);
         Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate);
-        ValueTask AddAsync(TEntity entity, bool commit = true);
+        ValueTask AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
     }
