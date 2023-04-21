@@ -78,7 +78,7 @@ namespace Study.HR.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] EmployeeDto employeeDto)
         {
-            Employee employee = new Employee()
+            Employee employee = new Employee(employeeDto.Name, employeeDto.Name)
             {
                 //Address = employeeDto.Address,
                 //LoginId = employeeDto.LoginId,

@@ -11,6 +11,16 @@ namespace Study.HR.Core.Domain.Entities
     /// </summary>
     public class EmploymentType : Entity
     {
+        protected EmploymentType() { }
+        public EmploymentType(string code, string name)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+
+            Name = name;
+            Code = code;
+        }
+
         /// <summary>
         /// 이름
         /// </summary>

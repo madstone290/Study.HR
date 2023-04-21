@@ -9,14 +9,17 @@ namespace Study.HR.Core.Domain.Entities
     /// <summary>
     /// 부서
     /// </summary>
-    public class Department
+    public class Department : Entity
     {
-        public int UpperDepartmentId { get; private set; }
-        
-        /// <summary>
-        /// 상위 부서
-        /// </summary>
-        public Department? UpperDepartment { get; private set; }
+        protected Department() { }
+        public Department(string code, string name)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+
+            Name = name;
+            Code = code;
+        }
 
         /// <summary>
         /// 이름
@@ -28,6 +31,15 @@ namespace Study.HR.Core.Domain.Entities
         /// </summary>
         public string Code { get; private set; } = string.Empty;
 
+        /// <summary>
+        /// 상위 부서
+        /// </summary>
+        public int? UpperDepartmentId { get; private set; }
+
+        /// <summary>
+        /// 상위 부서
+        /// </summary>
+        public Department? UpperDepartment { get; private set; }
 
     }
 }

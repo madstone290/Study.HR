@@ -9,13 +9,13 @@ namespace Study.HR.Core.Domain.Entities
     public class Employee : Entity
     {
         protected Employee() { }
-        public Employee(string name, string code)
+        public Employee(string code, string name)
         {
-            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
             ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
-
-            Name = name;
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            
             Code = code;
+            Name = name;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Study.HR.Core.Domain.Entities
         public string Name { get; private set; } = string.Empty;
 
         /// <summary>
-        /// 사원코드
+        /// 코드
         /// </summary>
         public string Code { get; private set; } = string.Empty;
 
