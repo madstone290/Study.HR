@@ -12,11 +12,14 @@ namespace Study.HR.Core.Domain
         where TEntity : Entity<TId>
         where TId : struct
     {
-        Task<TEntity?> GetAsync(TId id);
-        Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity?> FindAsync(TId id);
+        Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> predicate);
         ValueTask AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
+
+        IUnitOfWork UnitOfWork { get; }
+        Task SaveChangesAsync();
     }
 
     public interface IRepository<TEntity> : IRepository<TEntity, int>

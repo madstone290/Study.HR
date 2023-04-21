@@ -21,7 +21,7 @@ namespace Study.HR.Controllers
         [HttpGet]
         public async Task<IActionResult> GetListAsync([FromQuery] int? employeeId = null)
         {
-            var list = await _repository.Entities
+            var list = await _repository.Set
                 .Include(x => x.Employee)
                 .ToListAsync();
 
@@ -33,7 +33,7 @@ namespace Study.HR.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
-            var emp = await _repository.GetAsync(id);
+            var emp = await _repository.FindAsync(id);
 
             return Ok(emp);
         }

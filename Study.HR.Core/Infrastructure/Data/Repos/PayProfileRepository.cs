@@ -9,55 +9,52 @@ using System.Threading.Tasks;
 
 namespace Study.HR.Core.Infrastructure.Data.Repos
 {
-    public class PayProfileRepository : Repository<PayProfile>, IEmployeeSalaryReadRepository
+    public class PayProfileRepository : Repository<PayProfile>, IPayProfileReadRepository
     {
         public PayProfileRepository(ApplicationDbContext context) : base(context)
         {
         }
 
-        public async Task<EmployeeSalaryDto?> GetAsync(int salaryId)
+        public async Task<PayProfileDto?> GetAsync(int salaryId)
         {
-            return await Entities
+            return await Set
                 .AsNoTracking()
                 .Where(x => x.Id == salaryId)
                 .Include(x => x.Employee)
-                .Select(x => new EmployeeSalaryDto()
+                .Select(x => new PayProfileDto()
                 {
                     EmployeeId = x.EmployeeId,
                     BaseSalary = x.BaseSalary,
                     BonusRate = x.BonusRate,
-                    EmployeeName = x.Employee.Name,
                 })
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<EmployeeSalaryDto>> GetListAsync()
+        public async Task<List<PayProfileDto>> GetListAsync()
         {
-            return await Entities
+            return await Set
                .AsNoTracking()
                .Include(x => x.Employee)
-               .Select(x => new EmployeeSalaryDto()
+               .Select(x => new PayProfileDto()
                {
                    EmployeeId = x.EmployeeId,
                    BaseSalary = x.BaseSalary,
                    BonusRate = x.BonusRate,
-                   EmployeeName = x.Employee.Name,
                })
                .ToListAsync();
         }
 
-        public async Task<List<EmployeeSalaryDto>> GetListAsync(int employeeId)
+        public async Task<List<PayProfileDto>> GetListAsync(int employeeId)
         {
-            return await Entities
+            return await Set
                .AsNoTracking()
                .Where(x => x.EmployeeId == employeeId)
                .Include(x => x.Employee)
-               .Select(x => new EmployeeSalaryDto()
+               .Select(x => new PayProfileDto()
                {
                    EmployeeId = x.EmployeeId,
                    BaseSalary = x.BaseSalary,
                    BonusRate = x.BonusRate,
-                   EmployeeName = x.Employee.Name,
                })
                .ToListAsync();
         }

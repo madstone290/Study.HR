@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Study.HR.Core.Infrastructure.Data
+namespace Study.HR.Core.Domain
 {
     public interface IUnitOfWork
     {

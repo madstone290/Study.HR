@@ -27,7 +27,7 @@ namespace Study.HR.Controllers
             if (name == null)
                 employees = await _repository.Context.Set<Employee>().ToListAsync();
             else
-                employees = await _repository.GetListAsync(x => x.Name.Contains(name));
+                employees = await _repository.FindListAsync(x => x.Name.Contains(name));
             return Ok(employees.Select(x => new EmployeeDto()
             {
                 Id = x.Id,
@@ -52,7 +52,7 @@ namespace Study.HR.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
-            var emp = await _repository.GetAsync(id);
+            var emp = await _repository.FindAsync(id);
             if (emp == null)
                 return Ok(null);
 

@@ -14,11 +14,8 @@ namespace Study.HR.Core.Domain.Entities
         protected CareerType() { }
         public CareerType(string code, string name)
         {
-            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
-            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
-
-            Name = name;
-            Code = code;
+            ChangeCode(code);
+            ChangeName(name);
         }
 
 
@@ -31,5 +28,25 @@ namespace Study.HR.Core.Domain.Entities
         /// 코드
         /// </summary>
         public string Code { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// 코드 변경
+        /// </summary>
+        /// <param name="code"></param>
+        public void ChangeCode(string code)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+            Code = code;
+        }
+
+        /// <summary>
+        /// 이름 변경
+        /// </summary>
+        /// <param name="name"></param>
+        public void ChangeName(string name)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            Name = name;
+        }
     }
 }

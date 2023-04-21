@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
+using Study.HR.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

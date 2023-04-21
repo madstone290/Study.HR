@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Study.HR.Core;
 using Study.HR.Core.Application.Repos;
+using Study.HR.Core.Domain.Repos;
 using Study.HR.Core.Infrastructure.Data;
 using Study.HR.Core.Infrastructure.Data.Repos;
 
@@ -21,7 +23,13 @@ namespace Study.HR
                 cfg.UseNpgsql(dbConn);
             });
 
-            builder.Services.AddScoped<IEmployeeSalaryReadRepository, PayProfileRepository>();
+            builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly));
+
+
+            builder.Services.AddScoped<ICareerTypeRepository, CareerTypeRepository>();
+            builder.Services.AddScoped<ICareerTypeReadRepository, CareerTypeRepository>();
+
+            builder.Services.AddScoped<IPayProfileReadRepository, PayProfileRepository>();
             builder.Services.AddScoped(typeof(Repository<>));
             builder.Services.AddScoped(typeof(Repository<,>));
 

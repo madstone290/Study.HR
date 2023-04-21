@@ -12,11 +12,11 @@ namespace Study.HR.Controllers
     {
         private readonly ILogger<EmployeeController> _logger;
         private readonly Repository<PayProfile> _repository;
-        private readonly IEmployeeSalaryReadRepository _employeeSalaryReadRepository;
+        private readonly IPayProfileReadRepository _employeeSalaryReadRepository;
 
         public EmployeeSalaryController(ILogger<EmployeeController> logger, 
             Repository<PayProfile> repository,
-            IEmployeeSalaryReadRepository employeeSalaryReadRepository)
+            IPayProfileReadRepository employeeSalaryReadRepository)
         {
             _logger = logger;
             _repository = repository;

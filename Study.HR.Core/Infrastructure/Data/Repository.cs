@@ -32,7 +32,7 @@ namespace Study.HR.Core.Infrastructure.Data
         }
 
         public IUnitOfWork UnitOfWork => _context;
-        public DbSet<TEntity> Entities => _context.Set<TEntity>();
+        public DbSet<TEntity> Set => _context.Set<TEntity>();
         public ApplicationDbContext Context => _context;
 
         public async ValueTask AddAsync(TEntity entity)
@@ -50,7 +50,7 @@ namespace Study.HR.Core.Infrastructure.Data
             _context.Remove(entity);
         }
 
-        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _context.Set<TEntity>()
                 .Where(predicate)
@@ -58,9 +58,14 @@ namespace Study.HR.Core.Infrastructure.Data
         }
 
 
-        public async Task<TEntity?> GetAsync(TId id)
+        public async Task<TEntity?> FindAsync(TId id)
         {
             return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public Task SaveChangesAsync()
+        {
+            return _context.SaveChangesAsync();
         }
     }
 
