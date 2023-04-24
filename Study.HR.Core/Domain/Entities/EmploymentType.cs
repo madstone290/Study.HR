@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Study.HR.Core.Domain.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,13 @@ namespace Study.HR.Core.Domain.Entities
     public class EmploymentType : Entity
     {
         protected EmploymentType() { }
-        public EmploymentType(string code, string name)
-        {
-            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
-            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
 
-            Name = name;
-            Code = code;
+        public static async Task<EmploymentType> CreateAsync(string code, string name, IEmploymentTypeService service)
+        {
+            EmploymentType employmentType = new EmploymentType();
+            await employmentType.ChangeCodeAsync(code, service);
+            await employmentType.ChangeNameAsync(name, service);
+            return employmentType;
         }
 
         /// <summary>
@@ -32,5 +33,31 @@ namespace Study.HR.Core.Domain.Entities
         public string Code { get; private set; } = string.Empty;
 
 
+
+        /// <summary>
+        /// 코드 변경
+        /// </summary>
+        /// <param name="code"></param>
+        public async Task ChangeCodeAsync(string code, IEmploymentTypeService service)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+            if (Code == code)
+                return;
+            ThrowIf(await service.CodeExistAsync(code), "Code exist!");
+            Code = code;
+        }
+
+        /// <summary>
+        /// 이름 변경
+        /// </summary>
+        /// <param name="name"></param>
+        public async Task ChangeNameAsync(string name, IEmploymentTypeService service)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            if (Name == name)
+                return;
+            ThrowIf(await service.NameExistAsync(name), "Name exist!");
+            Name = name;
+        }
     }
 }

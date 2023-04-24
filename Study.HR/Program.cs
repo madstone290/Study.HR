@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Study.HR.Core;
 using Study.HR.Core.Application.Repos;
+using Study.HR.Core.Domain;
 using Study.HR.Core.Domain.Repos;
 using Study.HR.Core.Domain.Services;
 using Study.HR.Core.Infrastructure.Data;
@@ -28,17 +29,20 @@ namespace Study.HR
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly));
 
 
-            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IDepartmentReadRepository, DepartmentRepository>();
 
-            builder.Services.AddScoped<ICareerTypeService, CareerTypeService>();
-            builder.Services.AddScoped<ICareerTypeRepository, CareerTypeRepository>();
-            builder.Services.AddScoped<ICareerTypeReadRepository, CareerTypeRepository>();
+            builder.Services.Scan(selector =>
+            {
+                selector.FromAssemblyOf<CoreAssembly>()
+                    .AddClasses(filter => filter.AssignableTo<Repository>())
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
 
-            builder.Services.AddScoped<IPayProfileReadRepository, PayProfileRepository>();
-            builder.Services.AddScoped(typeof(Repository<>));
-            builder.Services.AddScoped(typeof(Repository<,>));
+                selector.FromAssemblyOf<CoreAssembly>()
+                    .AddClasses(filter => filter.AssignableTo<IDomainService>())
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
+            });
+
 
 
             builder.Services.AddControllers();
@@ -58,7 +62,7 @@ namespace Study.HR
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod());
-                
+
 
             app.UseHttpsRedirection();
 
