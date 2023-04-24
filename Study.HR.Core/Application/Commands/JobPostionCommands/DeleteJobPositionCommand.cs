@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Study.HR.Core.Application.Commands.JobPositionCmds
+namespace Study.HR.Core.Application.Commands.JobPositionCommands
 {
     public class DeleteJobPositionCommand : ICommand
     {

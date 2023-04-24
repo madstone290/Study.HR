@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Study.HR.Core.Application.Commands.EmploymentTypeCmds
+namespace Study.HR.Core.Application.Commands.EmploymentTypeCommands
 {
     public class DeleteEmploymentTypeCommand : ICommand
     {

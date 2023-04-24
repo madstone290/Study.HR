@@ -3,7 +3,7 @@ using Study.HR.Core.Domain.Entities;
 using Study.HR.Core.Domain.Repos;
 using Study.HR.Core.Domain.Services;
 
-namespace Study.HR.Core.Application.Commands.EmploymentTypeCmds
+namespace Study.HR.Core.Application.Commands.EmploymentTypeCommands
 {
     public class CreateEmploymentTypeCommand : ICommand<int>
     {

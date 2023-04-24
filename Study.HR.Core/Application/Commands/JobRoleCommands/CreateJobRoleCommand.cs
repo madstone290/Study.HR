@@ -3,7 +3,7 @@ using Study.HR.Core.Domain.Entities;
 using Study.HR.Core.Domain.Repos;
 using Study.HR.Core.Domain.Services;
 
-namespace Study.HR.Core.Application.Commands.JobRoleCmds
+namespace Study.HR.Core.Application.Commands.JobRoleCommands
 {
     public class CreateJobRoleCommand : ICommand<int>
     {

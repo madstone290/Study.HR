@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Study.HR.Controllers.Parameters;
-using Study.HR.Core.Application.Commands.JobRoleCmds;
+using Study.HR.Core.Application.Commands.JobRoleCommands;
 using Study.HR.Core.Application.Dto;
 using Study.HR.Core.Application.Quries;
 

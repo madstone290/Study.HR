@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Study.HR.Controllers.Parameters;
-using Study.HR.Core.Application.Commands.JobPositionCmds;
+using Study.HR.Core.Application.Commands.JobPositionCommands;
 using Study.HR.Core.Application.Dto;
 using Study.HR.Core.Application.Quries;
 
