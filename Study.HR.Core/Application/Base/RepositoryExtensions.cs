@@ -4,7 +4,7 @@ namespace Study.HR.Core.Application.Base
 {
     public static class RepositoryExtensions
     {
-        public static async Task<TEntity> FindOrThrowAsync<TEntity, TId>(this IRepository<TEntity, TId> repository, TId id)
+        public static async Task<TEntity> FindOrThrowAsync<TEntity, TId>(this IRepositoryBase<TEntity, TId> repository, TId id)
             where TEntity : Entity<TId>
             where TId : struct
         {
@@ -12,7 +12,7 @@ namespace Study.HR.Core.Application.Base
             return entity ?? throw new AppException($"개체를 찾을 수 없습니다. ID: {id}");
         }
 
-        public static async Task<TEntity?> FindOrThrowAsync<TEntity, TId>(this IRepository<TEntity, TId> repository, TId? id)
+        public static async Task<TEntity?> FindOrThrowAsync<TEntity, TId>(this IRepositoryBase<TEntity, TId> repository, TId? id)
            where TEntity : Entity<TId>
            where TId : struct
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Study.HR.Core.Domain.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Study.HR.Core.Domain.Entities
 {
-    public class Employee : Entity
+    public class Employee : Entity, IHasCode, IHasName
     {
         protected Employee() { }
-        public Employee(string code, string name)
+
+        public static async Task<Employee> CreateAsync(string code, string name, IEmployeeService service)
         {
-            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
-            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
-            
-            Code = code;
-            Name = name;
+            Employee employee = new Employee();
+            await employee.ChangeCodeAsync(code, service);
+            employee.ChangeName(name);
+            return employee;
         }
 
         /// <summary>
@@ -145,5 +146,103 @@ namespace Study.HR.Core.Domain.Entities
         public EmploymentType? EmploymentType { get; private set; }
 
 
+
+        /// <summary>
+        /// 코드 변경
+        /// </summary>
+        /// <param name="code"></param>
+        public async Task ChangeCodeAsync(string code, IEmployeeService service)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(code), "Code is empty");
+            if (Code == code)
+                return;
+            ThrowIf(await service.CodeExistAsync(code), "Code exist!");
+            Code = code;
+        }
+
+        /// <summary>
+        /// 이름 변경
+        /// </summary>
+        /// <param name="name"></param>
+        public void ChangeName(string name)
+        {
+            ThrowIf(string.IsNullOrWhiteSpace(name), "Name is empty");
+            if (Name == name)
+                return;
+            Name = name;
+        }
+
+        public void ChangeJobPosition(JobPosition? jobPosition)
+        {
+            JobPosition = jobPosition;
+        }
+
+        public void ChangeJobRole(JobRole? jobRole)
+        {
+            JobRole = jobRole;
+        }
+
+        public void ChangeEmploymentType(EmploymentType? employmentType)
+        {
+            EmploymentType = employmentType;
+        }
+
+        public void ChangeCareerType(CareerType? careerType)
+        {
+            CareerType = careerType;
+        }
+
+        public void Retire(DateTime? retireDate, string? retireReason)
+        {
+            RetireDate = retireDate;
+            RetireReason = retireReason;
+        }
+
+        public void ChangeEnglishName(string? englishName)
+        {
+            EnglishName = englishName;
+        }
+
+        public void ChangeHouseOwner(bool isHouseOwner)
+        {
+            IsHouseOwner = isHouseOwner;
+        }
+
+        public void ChangeHireDate(DateTime? hireDate)
+        {
+            HireDate = hireDate;
+        }
+
+        public void ChangeOthers(string? memo, string? imagePath)
+        {
+            Memo = memo;
+            ImagePath = imagePath;
+        }
+
+        public void ChangeResidentNumber(string? residentNumber)
+        {
+            ResidentNumber = residentNumber;
+        }
+
+        public void ChangePassword(string? password, IHashService service)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                Password = null;
+            else
+                Password = service.Hash(password);
+        }
+
+        public void ChangeContact(string? email, string? phoneNumber, string? mobileNumber)
+        {
+            Email = email;
+            PhoneNumber = phoneNumber;
+            MobileNumber = mobileNumber;
+        }
+
+        public void ChangeAddressInfo(string? address, string? zipCode)
+        {
+            Address = address;
+            ZipCode = zipCode;
+        }
     }
 }

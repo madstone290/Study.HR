@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Study.HR.Core.Domain
 {
-    public interface IRepository<TEntity, TId>
+    public interface IRepositoryBase<TEntity, TId>
         where TEntity : Entity<TId>
         where TId : struct
     {
@@ -22,7 +22,7 @@ namespace Study.HR.Core.Domain
         Task SaveChangesAsync();
     }
 
-    public interface IRepository<TEntity> : IRepository<TEntity, int>
+    public interface IRepositoryBase<TEntity> : IRepositoryBase<TEntity, int>
          where TEntity : Entity<int>
     {
 

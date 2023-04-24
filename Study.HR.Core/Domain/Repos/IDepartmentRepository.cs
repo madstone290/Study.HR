@@ -2,10 +2,7 @@
 
 namespace Study.HR.Core.Domain.Repos
 {
-    public interface IDepartmentRepository : IRepository<Department>
+    public interface IDepartmentRepository : IRepositoryBase<Department>, ICodeRepository, INameRepository
     {
-        Task<bool> ExistCodeAsync(string code);
-
-        Task<bool> ExistNameAsync(string name);
     }
 }

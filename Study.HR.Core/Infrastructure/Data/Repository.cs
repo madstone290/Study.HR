@@ -23,7 +23,7 @@ namespace Study.HR.Core.Infrastructure.Data
         }
     }
 
-    public class Repository<TEntity, TId> : Repository, IRepository<TEntity, TId>
+    public class Repository<TEntity, TId> : Repository, IRepositoryBase<TEntity, TId>
         where TEntity : Entity<TId>
         where TId : struct
     {
