@@ -8,6 +8,7 @@ import {
     Select,
 } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import { Department } from '../../data/department';
 
 const formItemLayout = {
     labelCol: {
@@ -18,28 +19,35 @@ const formItemLayout = {
     },
 };
 
-export function DepartmentForm({ initialDepartment }) {
-    console.log("Rendering DepartmentForm");
+export function DepartmentForm({ initialDepartment, isReady, onValidate }) {
     const [form] = Form.useForm();
-    const employeeRef = useRef(initialDepartment);
+    const departmentRef = useRef(Department.new());
 
     useEffect(() => {
         form.resetFields();
         form.setFieldsValue(initialDepartment);
-        employeeRef.current = initialDepartment;
-    }, [initialDepartment])
+    }, [initialDepartment]);
 
+
+    const validate = async () => {
+        let valid = false;
+        try {
+            await form.validateFields();
+            valid = true;
+        } catch (err) {
+            console.log(err);
+        }
+        onValidate(valid, departmentRef.current);
+    }
+
+    useEffect(() => {
+        if (isReady)
+            validate();
+    })
 
     const formValueChanged = (changedValues, values) => {
         const [key, value] = Object.entries(changedValues)[0]
-
-        employeeRef.current[key] = value;
-        if (key == "enteredDateAsDate" && value) {
-            employeeRef.current.enteredDateAsString = value.format("YYYY-MM-DD");
-        }
-        else if (key == "phoneNumberHead" || key == "phoneNumberBody") {
-            employeeRef.current.mergePhoneNumber();
-        }
+        departmentRef.current[key] = value;
     };
 
     return (

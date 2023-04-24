@@ -5,7 +5,11 @@ export class Department{
     name = "";
     upperDepartmentId = null;
 
-
+    static new(){
+        const dept = new Department();
+        return dept;
+    }
+    
     static fromJson(json) {
         const dept = new Department();
         dept.key = json.id;

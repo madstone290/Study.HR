@@ -89,7 +89,7 @@ export function DepartmentList() {
                 pagination={pagenation}
                 columns={columns}
                 dataSource={departments} />
-            <DepartmentModal showModal={showModal} handleClosed={()=>setShowModal(false)} />
+            <DepartmentModal showModal={showModal} onClosed={()=>setShowModal(false)} />
         </div>
 
     );

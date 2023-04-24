@@ -1,24 +1,44 @@
 import { Modal } from "antd"
 import { useState, useEffect, useRef, useReducer } from "react";
+import { DepartmentForm } from "./DepartmentForm";
+import { Department } from "../../data/department";
+import { departmentApi } from "../../api/department-api";
 
-export function DepartmentModal({ showModal, handleClosed }) {
-    console.log("Rendering DepartmentModal");
+export function DepartmentModal({ showModal, onClosed }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isReady, setIsReady] = useState(false);
+    const departmentRef = useRef(Department.new());
 
     useEffect(() => {
-        if (showModal)
+        if (showModal) {
             setIsModalOpen(showModal);
-        console.log("showModal is changed");
+            departmentRef.current = Department.new();
+        }
     }, [showModal])
 
-    const handleModalOk = async () => {
+    const handleValidate = async (valid, obj) => {
+        if (valid) {
+            await departmentApi.addDepartment(obj);
+            close();
+        }
+        else {
+            alert("not valid...");
+        }
+        setIsReady(false);
+    }
+
+    const close = () => {
         setIsModalOpen(false);
-        handleClosed();
+        onClosed();
+    }
+
+
+    const handleModalOk = async () => {
+        setIsReady(true);
     }
 
     const handleModalCancel = () => {
-        setIsModalOpen(false);
-        handleClosed();
+        close();
     };
 
     return (
@@ -27,6 +47,7 @@ export function DepartmentModal({ showModal, handleClosed }) {
             maskClosable={false}
             onOk={handleModalOk}
             onCancel={handleModalCancel}>
+            <DepartmentForm initialDepartment={departmentRef.current} isReady={isReady} onValidate={handleValidate} />
         </Modal>
     );
 }
