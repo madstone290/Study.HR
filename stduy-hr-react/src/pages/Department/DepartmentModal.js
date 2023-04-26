@@ -5,49 +5,47 @@ import { Department } from "../../data/department";
 import { departmentApi } from "../../api/department-api";
 
 export function DepartmentModal({ showModal, onClosed }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isReady, setIsReady] = useState(false);
-    const departmentRef = useRef(Department.new());
+    const [modalOpen, setModalOpen] = useState(false);
+    const formRef = useRef();
 
     useEffect(() => {
         if (showModal) {
-            setIsModalOpen(showModal);
-            departmentRef.current = Department.new();
+            setModalOpen(showModal);
         }
     }, [showModal])
 
-    const handleValidate = async (valid, obj) => {
-        if (valid) {
-            await departmentApi.addDepartment(obj);
-            close();
-        }
-        else {
-            alert("not valid...");
-        }
-        setIsReady(false);
-    }
-
     const close = () => {
-        setIsModalOpen(false);
+        setModalOpen(false);
         onClosed();
     }
 
-
     const handleModalOk = async () => {
-        setIsReady(true);
+        const [valid, department] = await formRef.current.validate();
+        if (valid) {
+            //TODO api call
+            console.log("model is valid");
+            close();
+        } else {
+            alert("model is not valid");
+        }
+
     }
 
     const handleModalCancel = () => {
         close();
     };
 
+    const departmentFormProps = {
+        department: Department.new()
+    };
+
     return (
-        <Modal title="부서 추가" open={isModalOpen}
+        <Modal title="부서 추가" open={modalOpen}
             width={1000}
             maskClosable={false}
             onOk={handleModalOk}
             onCancel={handleModalCancel}>
-            <DepartmentForm initialDepartment={departmentRef.current} isReady={isReady} onValidate={handleValidate} />
+            <DepartmentForm ref={formRef} {...departmentFormProps} />
         </Modal>
     );
 }

@@ -4,27 +4,13 @@ import { useTableAutoSize } from '../../hooks/useTableAutoSize';
 
 import { departmentApi } from '../../api/department-api';
 import { DepartmentModal } from './DepartmentModal';
-
-
-
-
-class AntColumn {
-    title = "";
-    dataIndex = "";
-    render = (value) => { }
-
-    constructor(title, dataIndex, render) {
-        this.title = title;
-        this.dataIndex = dataIndex;
-        this.render = render;
-    }
-}
+import { AntColumnProps } from '../../props/AntColumnProps';
 
 const columns = [
-    new AntColumn("ID", "id"),
-    new AntColumn("코드", "code", (value) => <a>{value}</a>),
-    new AntColumn("이름", "name"),
-    new AntColumn("상위부서ID", "upperDepartmentId")
+    new AntColumnProps({ title: "ID", dataIndex: "id" }),
+    new AntColumnProps({ title: "코드", dataIndex: "code", render: (value) => <a>{value}</a> }),
+    new AntColumnProps({ title: "이름", dataIndex: "name" }),
+    new AntColumnProps({ title: "상위부서ID", dataIndex: "upperDepartmentId" })
 ];
 
 // rowSelection object indicates the need for row selection
@@ -45,7 +31,6 @@ const pagenation = {
 
 
 export function DepartmentList() {
-    console.log("rendering DepartmentList");
     const [departments, setDepartments] = useState([]);
     const [showModal, setShowModal] = useState(false);
 
@@ -89,7 +74,7 @@ export function DepartmentList() {
                 pagination={pagenation}
                 columns={columns}
                 dataSource={departments} />
-            <DepartmentModal showModal={showModal} onClosed={()=>setShowModal(false)} />
+            <DepartmentModal showModal={showModal} onClosed={() => setShowModal(false)} />
         </div>
 
     );

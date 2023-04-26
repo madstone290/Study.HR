@@ -7,8 +7,8 @@ import {
     Row,
     Select,
 } from 'antd';
-import { useEffect, useRef, useState } from 'react';
-import { Department } from '../../data/department';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { AntFormItemProps } from '../../props/AntFormItemProps';
 
 const formItemLayout = {
     labelCol: {
@@ -19,31 +19,47 @@ const formItemLayout = {
     },
 };
 
-export function DepartmentForm({ initialDepartment, isReady, onValidate }) {
+const formItems = {
+    code: new AntFormItemProps({
+        name: "code",
+        label: "코드",
+        rules: [{
+            required: true,
+            message: "코드를 입력하세요",
+        }]
+    }),
+    name: new AntFormItemProps({
+        name: "name",
+        label: "이름",
+        rules: [{
+            required: true,
+            message: "이름을 입력하세요",
+        }]
+    })
+};
+
+export const DepartmentForm = forwardRef((props, ref) => {
+    const { department } = props;
     const [form] = Form.useForm();
-    const departmentRef = useRef(Department.new());
+    const departmentRef = useRef(department);
 
     useEffect(() => {
         form.resetFields();
-        form.setFieldsValue(initialDepartment);
-    }, [initialDepartment]);
+        form.setFieldsValue(department);
+    }, [department]);
 
-
-    const validate = async () => {
-        let valid = false;
-        try {
-            await form.validateFields();
-            valid = true;
-        } catch (err) {
-            console.log(err);
+    useImperativeHandle(ref, () => {
+        return {
+            validate: async () => {
+                try {
+                    await form.validateFields()
+                    return [true, departmentRef.current];
+                } catch {
+                    return [false, departmentRef.current];
+                }
+            }
         }
-        onValidate(valid, departmentRef.current);
-    }
-
-    useEffect(() => {
-        if (isReady)
-            validate();
-    })
+    });
 
     const formValueChanged = (changedValues, values) => {
         const [key, value] = Object.entries(changedValues)[0]
@@ -61,36 +77,16 @@ export function DepartmentForm({ initialDepartment, isReady, onValidate }) {
 
             <Row>
                 <Col span={12}>
-                    <Form.Item name="code"
-                        label="코드"
-                        rules={[
-                            {
-                                required: true,
-                                message: "코드를 입력하세요",
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.code}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name="name"
-                        label="이름"
-                        rules={[
-                            {
-                                required: true,
-                                message: "이름을 입력하세요",
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.name}>
                         <Input />
                     </Form.Item>
                 </Col>
             </Row>
-
-
-
-
         </Form>
     );
-};
+});

@@ -2,39 +2,27 @@ import { DatePicker, Table, Tag, Divider, Button, Modal, Row, Col } from 'antd';
 import { Resizable } from 'react-resizable';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Employee, employeeList } from "../../data/employee";
-import { config } from "../../config"
 import { EmployeeModal, EmployeeModalProps } from "./EmployeeModal"
 import { useTableAutoSize } from '../../hooks/useTableAutoSize';
 import { getEmployees } from '../../api/employee-api';
 import { EmployeeContext, EmployeeContextValue } from './EmployeeContext';
-
-class AntColumn {
-    title = "";
-    dataIndex = "";
-    render = (value) => { }
-
-    constructor(title, dataIndex, render) {
-        this.title = title;
-        this.dataIndex = dataIndex;
-        this.render = render;
-    }
-}
+import { AntColumnProps } from '../../props/AntColumnProps';
 
 const columns = [
-    new AntColumn("이름", "name", (value) => <a>{value}</a>),
-    new AntColumn("입사일", "enteredDateAsString"),
-    new AntColumn("생년월일", "dateOfBirthAsString"),
-    new AntColumn("주소", "address"),
-    new AntColumn("로그인아이디", "loginId"),
-    new AntColumn("로그인비밀번호", "loginPassword"),
-    new AntColumn("이메일", "email"),
-    new AntColumn("휴대폰", "phoneNumber"),
-    new AntColumn("급여타입", "salaryType"),
-    new AntColumn("기본급여", "baseSalary"),
-    new AntColumn("통화", "salaryCurrency"),
-    new AntColumn("설명", "desc"),
-    new AntColumn("등급", "rate"),
-    new AntColumn("관리자", "isAdmin", (value) => <span>{value ? "O" : ""}</span>)
+    new AntColumnProps({ title: "이름", dataIndex: "name", render: (value) => <a>{value}</a> }),
+    new AntColumnProps({ title: "입사일", dataIndex: "enteredDateAsString" }),
+    new AntColumnProps({ title: "생년월일", dataIndex: "dateOfBirthAsString" }),
+    new AntColumnProps({ title: "주소", dataIndex: "address" }),
+    new AntColumnProps({ title: "로그인아이디", dataIndex: "loginId" }),
+    new AntColumnProps({ title: "로그인비밀번호", dataIndex: "loginPassword" }),
+    new AntColumnProps({ title: "이메일", dataIndex: "email" }),
+    new AntColumnProps({ title: "휴대폰", dataIndex: "phoneNumber" }),
+    new AntColumnProps({ title: "급여타입", dataIndex: "salaryType" }),
+    new AntColumnProps({ title: "기본급여", dataIndex: "baseSalary" }),
+    new AntColumnProps({ title: "통화", dataIndex: "salaryCurrency" }),
+    new AntColumnProps({ title: "설명", dataIndex: "desc" }),
+    new AntColumnProps({ title: "등급", dataIndex: "rate" }),
+    new AntColumnProps({ title: "관리자", dataIndex: "isAdmin", render: (value) => <span>{value ? "O" : ""}</span> })
 ];
 
 // rowSelection object indicates the need for row selection
@@ -55,7 +43,6 @@ const pagenation = {
 
 
 export function EmployeeListView() {
-    console.log("rendering EmployeeListView");
     const [employees, setEmployees] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
 

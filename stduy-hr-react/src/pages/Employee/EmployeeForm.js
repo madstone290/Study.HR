@@ -13,6 +13,7 @@ import {
 import { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Employee, SalaryType } from '../../data/employee';
 import FormItem from 'antd/es/form/FormItem';
+import { AntFormItemProps } from '../../props/AntFormItemProps';
 const { Option } = Select;
 
 
@@ -26,28 +27,16 @@ const formItemLayout = {
     scrollToFirstError: true
 };
 
-export class EmployeeFormProps {
-    /**
-     * 사원 초기값
-     */
-    employee = Employee.empty();
-}
-
-/**
- * 
- * @param {EmployeeFormProps} props 
- */
-
 const formItems = {
-    name: {
+    name: new AntFormItemProps({
         name: "name",
         label: "이름",
         rules: [{
             required: true,
             message: "이름을 입력하세요"
         }]
-    },
-    email: {
+    }),
+    email: new AntFormItemProps({
         name: "email",
         label: "E-mail",
         rules: [
@@ -60,42 +49,42 @@ const formItems = {
                 message: 'Please input your E-mail!',
             }
         ]
-    },
-    phoneNumberBody: {
+    }),
+    phoneNumberBody: new AntFormItemProps({
         name: "phoneNumberBody",
         label: "Phone Number",
         rules: [{
             required: false,
             message: 'Please input your phone number!'
         }]
-    },
-    phoneNumberHead: {
+    }),
+    phoneNumberHead: new AntFormItemProps({
         name: "phoneNumberHead",
-    },
-    salaryType: {
+    }),
+    salaryType: new AntFormItemProps({
         name: "salaryType",
         label: "급여 타입",
         rules: [{
             required: true,
             message: "급여를 선택하세요!",
         }]
-    },
-    baseSalary: {
+    }),
+    baseSalary: new AntFormItemProps({
         name: "baseSalary",
         label: "기준 급여",
         rules: [{
             required: false,
             message: '기준 급여를 입력하세요!',
         }]
-    },
-    salaryCurrency: {
+    }),
+    salaryCurrency: new AntFormItemProps({
         name: "salaryCurrency",
         rules: [{
             required: false,
             message: "통화를 선택하세요"
         }]
-    },
-    loginId: {
+    }),
+    loginId: new AntFormItemProps({
         name: "loginId",
         label: "로그인ID",
         tooltip: "로그인에 사용되는 아이디",
@@ -104,8 +93,8 @@ const formItems = {
             message: '아이디를 입력하세요',
             whitespace: true,
         }]
-    },
-    password: {
+    }),
+    password: new AntFormItemProps({
         name: "password",
         label: "Password",
         rules: [{
@@ -113,8 +102,8 @@ const formItems = {
             message: 'Please input your password!',
         }],
         hasFeedback: true
-    },
-    confirm: {
+    }),
+    confirm: new AntFormItemProps({
         name: "confirm",
         label: "Confirm Password",
         dependencies: ['password'],
@@ -133,19 +122,26 @@ const formItems = {
                 },
             }),
         ]
-    },
-    enteredDateAsDate: {
+    }),
+    enteredDateAsDate: new AntFormItemProps({
         name: "enteredDateAsDate",
         label: "입사일",
         rules: [{
             required: true,
             message: "입사일을 선택하세요"
         }]
-    },
-    desc: {
+    }),
+    desc: new AntFormItemProps({
         name: "desc",
         label: "설명"
-    }
+    })
+}
+
+export class EmployeeFormProps {
+    /**
+     * 사원 초기값
+     */
+    employee = Employee.empty();
 }
 
 export const EmployeeForm = forwardRef((props, ref) => {
