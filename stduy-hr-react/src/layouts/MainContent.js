@@ -11,7 +11,7 @@ const contentStyle = {
     padding: 24,
     margin: 0,
     minHeight: 280,
-    backgroundColor: "#E5E4E2"
+    backgroundColor: "white"
 };
 
 export function MainContent() {

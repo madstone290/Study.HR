@@ -1,11 +1,12 @@
-import { DatePicker, Table, Tag, Divider, Button, Modal } from 'antd';
+import { DatePicker, Table, Tag, Divider, Button, Modal, Row, Col } from 'antd';
 import { Resizable } from 'react-resizable';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Employee, employeeList } from "../../data/employee";
 import { config } from "../../config"
-import { EmployeeModal } from "./EmployeeModal"
+import { EmployeeModal, EmployeeModalProps } from "./EmployeeModal"
 import { useTableAutoSize } from '../../hooks/useTableAutoSize';
 import { getEmployees } from '../../api/employee-api';
+import { EmployeeContext, EmployeeContextValue } from './EmployeeContext';
 
 class AntColumn {
     title = "";
@@ -56,6 +57,7 @@ const pagenation = {
 export function EmployeeListView() {
     console.log("rendering EmployeeListView");
     const [employees, setEmployees] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const loadData = async () => {
         const apiResult = await getEmployees();
@@ -67,13 +69,8 @@ export function EmployeeListView() {
         }
     };
 
-    let modalOpener = () => { }
-    const bindEmployeeModalState = (state) => {
-        modalOpener = state.modalOpener;
-    };
-
     const handleNewClick = () => {
-        modalOpener();
+        setModalOpen(true);
     };
     const handleLoadDataClick = () => {
         loadData();
@@ -86,27 +83,71 @@ export function EmployeeListView() {
     const tableRef = useRef(null);
     const tableHeight = useTableAutoSize(tableRef);
 
+    const menuProps = new MenuProps();
+    menuProps.onNewClick = handleNewClick;
+    menuProps.onLoadClick = handleLoadDataClick;
+
+    const contextValue = new EmployeeContextValue();
+    contextValue.modalOpen = modalOpen;
+    contextValue.setModalOpen = setModalOpen;
+
     return (
-        <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-            <div>
-                <Button type="primary" onClick={handleNewClick}>
-                    추가
-                </Button>
-                <Button type="second" onClick={handleLoadDataClick}>
-                    조회
-                </Button>
+        <EmployeeContext.Provider value={contextValue}>
+            <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                <Menu {...menuProps} />
+                <Table style={{ flex: "1" }}
+                    ref={tableRef}
+                    scroll={{ x: 1000, y: tableHeight }}
+                    rowSelection={rowSelection}
+                    pagination={pagenation}
+                    columns={columns}
+                    dataSource={employees} />
+                <EmployeeModal />
             </div>
-            <Table style={{ flex: "1" }}
-                ref={tableRef}
-                scroll={{ x: 1000, y: tableHeight }}
-                rowSelection={rowSelection}
-                pagination={pagenation}
-                columns={columns}
-                dataSource={employees} />
-            <EmployeeModal bindEmployeeModalState={bindEmployeeModalState} />
-        </div>
+        </EmployeeContext.Provider>
+
 
     );
 }
 
 
+
+class MenuProps {
+
+    /**
+     * 
+     * 추가버튼 클릭
+     * @param {Event} e
+     */
+    onNewClick = (e) => { };
+
+    /**
+     * 조회버튼 클릭
+     * @param {Event} e 
+     */
+    onLoadClick = (e) => { };
+
+}
+
+
+
+/**
+ * @param {MenuProps} props 
+ */
+const Menu = (props) => {
+    const basicStyle = {
+        textAlign: "start"
+    }
+
+    const { onNewClick, onLoadClick } = props;
+    return (
+        <div style={basicStyle}>
+            <Button onClick={onNewClick}>
+                추가
+            </Button>
+            <Button onClick={onLoadClick}>
+                조회
+            </Button>
+        </div>
+    );
+};

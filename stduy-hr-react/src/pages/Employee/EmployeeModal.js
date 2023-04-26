@@ -1,52 +1,44 @@
 import { Modal } from "antd"
-import { useState, useEffect, useRef, useReducer } from "react";
-import { EmployeeForm } from "./EmployeeForm";
+import { useState, useEffect, useRef, useReducer, useContext } from "react";
+import { EmployeeForm, EmployeeFormProps } from "./EmployeeForm";
 import { Employee } from "../../data/employee";
 import { addEmployee } from "../../api/employee-api";
+import { EmployeeContext } from "./EmployeeContext";
 
+export function EmployeeModal() {
+    const contextValue = useContext(EmployeeContext);
+    const { modalOpen, setModalOpen } = contextValue;
 
-export function EmployeeModal({ bindEmployeeModalState }) {
-    console.log("Rendering MyModal");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [employee, setEmployee] = useState(Employee.empty());
-    
-    const validateRef = useRef();
-    const bindEmployeeFormState = (formState) => {
-        const { validate } = formState;
-        validateRef.current = validate;
-    }
-
-    useEffect(() => {
-        const state = {
-            modalOpener: () => {
-                setIsModalOpen(true);
-                setEmployee(Employee.empty());
-            }
-        };
-        bindEmployeeModalState(state);
-    }, [bindEmployeeFormState, isModalOpen]);
+    const formRef = useRef();
 
     const handleModalOk = async () => {
-        if (await validateRef.current()) {
-            
-            if(await addEmployee(employee))
-                setIsModalOpen(false);
-            else
-                alert("error!");
+
+        const [valid, employee] = await formRef.current.validate();
+        if (valid) {
+            const apiResult = await addEmployee(employee);
+            if (apiResult.isSuccessful) {
+                setModalOpen(false);
+            } else {
+                alert(apiResult.message);
+            }
         }
     }
 
     const handleModalCancel = () => {
-        setIsModalOpen(false);
+        setModalOpen(false);
     };
 
+    const employeeFormProps = new EmployeeFormProps();
+    employeeFormProps.employee = new Employee("Jack");
+
     return (
-        <Modal title="사원 추가" open={isModalOpen}
+        <Modal title="사원 추가" open={modalOpen}
             width={1000}
             maskClosable={false}
             onOk={handleModalOk}
             onCancel={handleModalCancel}>
-            <EmployeeForm initialEmployee={employee} bindState={bindEmployeeFormState} />
+            <EmployeeForm {...employeeFormProps} ref={formRef} />
         </Modal>
     );
 }
+

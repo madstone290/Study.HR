@@ -10,8 +10,9 @@ import {
     Row,
     Select,
 } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Employee, SalaryType } from '../../data/employee';
+import FormItem from 'antd/es/form/FormItem';
 const { Option } = Select;
 
 
@@ -22,85 +23,180 @@ const formItemLayout = {
     wrapperCol: {
         span: 16,
     },
+    scrollToFirstError: true
 };
 
-export function EmployeeForm({ initialEmployee, bindState }) {
-    console.log("Rendering EmployeeForm");
-    const defaultRequired = true;
+export class EmployeeFormProps {
+    /**
+     * 사원 초기값
+     */
+    employee = Employee.empty();
+}
+
+/**
+ * 
+ * @param {EmployeeFormProps} props 
+ */
+
+const formItems = {
+    name: {
+        name: "name",
+        label: "이름",
+        rules: [{
+            required: true,
+            message: "이름을 입력하세요"
+        }]
+    },
+    email: {
+        name: "email",
+        label: "E-mail",
+        rules: [
+            {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+            },
+            {
+                required: true,
+                message: 'Please input your E-mail!',
+            }
+        ]
+    },
+    phoneNumberBody: {
+        name: "phoneNumberBody",
+        label: "Phone Number",
+        rules: [{
+            required: false,
+            message: 'Please input your phone number!'
+        }]
+    },
+    phoneNumberHead: {
+        name: "phoneNumberHead",
+    },
+    salaryType: {
+        name: "salaryType",
+        label: "급여 타입",
+        rules: [{
+            required: true,
+            message: "급여를 선택하세요!",
+        }]
+    },
+    baseSalary: {
+        name: "baseSalary",
+        label: "기준 급여",
+        rules: [{
+            required: false,
+            message: '기준 급여를 입력하세요!',
+        }]
+    },
+    salaryCurrency: {
+        name: "salaryCurrency",
+        rules: [{
+            required: false,
+            message: "통화를 선택하세요"
+        }]
+    },
+    loginId: {
+        name: "loginId",
+        label: "로그인ID",
+        tooltip: "로그인에 사용되는 아이디",
+        rules: [{
+            required: true,
+            message: '아이디를 입력하세요',
+            whitespace: true,
+        }]
+    },
+    password: {
+        name: "password",
+        label: "Password",
+        rules: [{
+            required: true,
+            message: 'Please input your password!',
+        }],
+        hasFeedback: true
+    },
+    confirm: {
+        name: "confirm",
+        label: "Confirm Password",
+        dependencies: ['password'],
+        hasFeedback: true,
+        rules: [
+            {
+                required: true,
+                message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+                validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                },
+            }),
+        ]
+    },
+    enteredDateAsDate: {
+        name: "enteredDateAsDate",
+        label: "입사일",
+        rules: [{
+            required: true,
+            message: "입사일을 선택하세요"
+        }]
+    },
+    desc: {
+        name: "desc",
+        label: "설명"
+    }
+}
+
+export const EmployeeForm = forwardRef((props, ref) => {
+    const { employee } = props;
+    const employeeRef = useRef(employee);
     const [form] = Form.useForm();
-    const employeeRef = useRef(initialEmployee);
 
     useEffect(() => {
-        const state = {
+        employeeRef.current = employee;
+        form.resetFields();
+        form.setFieldsValue(employee);
+    }, [employee])
+
+    useImperativeHandle(ref, () => {
+        return {
             validate: async () => {
                 try {
-                    await form.validateFields();
-                    return true;
+                    await form.validateFields()
+                    return [true, employeeRef.current];
                 } catch {
-                    return false;
+                    return [false, employeeRef.current];
                 }
             }
         }
-        bindState(state);
-    }, [])
+    });
 
-    useEffect(() => {
-        form.resetFields();
-        form.setFieldsValue(initialEmployee);
-        employeeRef.current = initialEmployee;
-    }, [initialEmployee])
-
-
-    const formValueChanged = (changedValues, values) => {
+    const onFormValueChanged = (changedValues, values) => {
         const [key, value] = Object.entries(changedValues)[0]
 
         employeeRef.current[key] = value;
-        if (key == "enteredDateAsDate" && value) {
+        if (key == formItems.enteredDateAsDate.name && value) {
             employeeRef.current.enteredDateAsString = value.format("YYYY-MM-DD");
         }
-        else if (key == "phoneNumberHead" || key == "phoneNumberBody") {
+        else if (key == formItems.phoneNumberHead.name || key == formItems.phoneNumberBody.name) {
             employeeRef.current.mergePhoneNumber();
         }
     };
 
     return (
-        <Form
-            {...formItemLayout}
+        <Form {...formItemLayout}
             form={form}
             name="register"
-            onValuesChange={formValueChanged}
-            scrollToFirstError
-        >
-
+            onValuesChange={onFormValueChanged}>
             <Row>
                 <Col span={12}>
-                    <Form.Item name="name"
-                        label="이름"
-                        rules={[
-                            {
-                                required: defaultRequired,
-                                message: "이름을 입력하세요",
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.name}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item
-                        name="email"
-                        label="E-mail"
-                        rules={[
-                            {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!',
-                            },
-                            {
-                                required: defaultRequired,
-                                message: 'Please input your E-mail!',
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.email}>
                         <Input />
                     </Form.Item>
                 </Col>
@@ -108,16 +204,7 @@ export function EmployeeForm({ initialEmployee, bindState }) {
 
             <Row>
                 <Col span={12}>
-                    <Form.Item
-                        name="salaryType"
-                        label="급여 타입"
-                        rules={[
-                            {
-                                required: defaultRequired,
-                                message: "급여를 선택하세요!",
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.salaryType}>
                         <Select placeholder="급여 타입을 선택하세요">
                             <Option value={SalaryType.Monthly}>월급</Option>
                             <Option value={SalaryType.Weekly}>주급</Option>
@@ -126,33 +213,17 @@ export function EmployeeForm({ initialEmployee, bindState }) {
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-
-                    <Form.Item
-                        name="phoneNumberBody"
-                        label="Phone Number"
-                        rules={[
-                            {
-                                required: false,
-                                message: 'Please input your phone number!',
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.phoneNumberBody}>
                         <Input
                             addonBefore={
-                                <Form.Item name="phoneNumberHead" noStyle>
-                                    <Select
-                                        style={{
-                                            width: 70,
-                                        }}
-                                    >
+                                <Form.Item  {...formItems.phoneNumberHead} noStyle>
+                                    <Select style={{ width: 70 }}>
                                         <Option value="010">010</Option>
                                         <Option value="011">011</Option>
                                     </Select>
                                 </Form.Item>
                             }
-                            style={{
-                                width: '100%',
-                            }}
+                            style={{ width: '100%', }}
                         />
                     </Form.Item>
 
@@ -161,56 +232,24 @@ export function EmployeeForm({ initialEmployee, bindState }) {
 
             <Row>
                 <Col span={12}>
-                    <Form.Item
-                        name="baseSalary"
-                        label="기준 급여"
-                        rules={[
-                            {
-                                required: false,
-                                message: '기준 급여를 입력하세요!',
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.baseSalary}>
                         <InputNumber
                             addonAfter={
-                                <Form.Item name="salaryCurrency" noStyle
-                                    rules={[
-                                        {
-                                            required: false,
-                                            message: "통화를 선택하세요"
-                                        }
-                                    ]}>
-                                    <Select
-                                        style={{
-                                            width: 70,
-                                        }}
-                                    >
+                                <Form.Item {...formItems.salaryCurrency} noStyle>
+                                    <Select style={{ width: 70 }}>
                                         <Option value="WON">₩</Option>
                                         <Option value="USD">$</Option>
                                         <Option value="CNY">¥</Option>
                                     </Select>
                                 </Form.Item>
                             }
-                            style={{
-                                width: '100%',
-                            }}
+                            style={{ width: '100%' }}
                         />
                     </Form.Item>
 
                 </Col>
                 <Col span={12}>
-                    <Form.Item
-                        name="loginId"
-                        label="로그인ID"
-                        tooltip="로그인에 사용되는 아이디"
-                        rules={[
-                            {
-                                required: defaultRequired,
-                                message: '아이디를 입력하세요',
-                                whitespace: true,
-                            },
-                        ]}
-                    >
+                    <Form.Item {...formItems.loginId}>
                         <Input />
                     </Form.Item>
                 </Col>
@@ -218,41 +257,12 @@ export function EmployeeForm({ initialEmployee, bindState }) {
 
             <Row>
                 <Col span={12}>
-                    <Form.Item
-                        name="confirm"
-                        label="Confirm Password"
-                        dependencies={['password']}
-                        hasFeedback
-                        rules={[
-                            {
-                                required: defaultRequired,
-                                message: 'Please confirm your password!',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (!value || getFieldValue('password') === value) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                                },
-                            }),
-                        ]}
-                    >
+                    <Form.Item {...formItems.password}>
                         <Input.Password />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item
-                        name="password"
-                        label="Password"
-                        rules={[
-                            {
-                                required: defaultRequired,
-                                message: 'Please input your password!',
-                            },
-                        ]}
-                        hasFeedback
-                    >
+                    <Form.Item {...formItems.confirm}>
                         <Input.Password />
                     </Form.Item>
                 </Col>
@@ -260,24 +270,12 @@ export function EmployeeForm({ initialEmployee, bindState }) {
 
             <Row>
                 <Col span={12}>
-                    <Form.Item
-                        name="enteredDateAsDate"
-                        label="입사일"
-                        rules={[
-                            {
-                                required: true,
-                                message: "입사일을 선택하세요"
-                            }
-                        ]}
-                    >
+                    <Form.Item {...formItems.enteredDateAsDate}>
                         <DatePicker style={{ width: "100%" }} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item
-                        name="desc"
-                        label="설명"
-                    >
+                    <Form.Item {...formItems.desc}>
                         <Input.TextArea showCount maxLength={100} />
                     </Form.Item>
 
@@ -287,4 +285,4 @@ export function EmployeeForm({ initialEmployee, bindState }) {
 
         </Form>
     );
-};
+});

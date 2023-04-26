@@ -27,6 +27,11 @@ export class Employee {
     /** @type {string} */
     salaryType = SalaryType.Monthly;
 
+    constructor(name){
+        this.name = name;
+        
+    }
+
     mergePhoneNumber() {
         this.phoneNumber = this.phoneNumberHead + "-" + this.phoneNumberBody;
     }
