@@ -1,0 +1,30 @@
+.containerStyle {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 6px;
+    height: 46px;
+    background-color: white;
+}
+
+.leftContainerStyle {
+    display: flex;
+    flex-direction: row;
+    flex: 0.5;
+}
+
+.logoStyle {
+    align-self: center;
+}
+
+.menuContainerStyle {
+    flex: 1;
+    align-self: flex-end
+}
+
+.menuStyle {
+    justify-content: flex-end;
+}
+
+.toggleBtnStyle {
+    align-self: center
+}

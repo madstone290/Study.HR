@@ -1,0 +1,9 @@
+.siderStyle {
+    width: "200px";
+    background-color: white;
+}
+
+.menuStyle {
+    height: '100%';
+    border-right: 0;
+}

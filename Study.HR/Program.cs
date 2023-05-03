@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Study.HR.Core;
-using Study.HR.Core.Application.Repos;
 using Study.HR.Core.Domain;
-using Study.HR.Core.Domain.Repos;
-using Study.HR.Core.Domain.Services;
 using Study.HR.Core.Infrastructure.Data;
-using Study.HR.Core.Infrastructure.Data.Repos;
 
 namespace Study.HR
 {
